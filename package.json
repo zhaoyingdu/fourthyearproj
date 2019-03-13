@@ -9,7 +9,7 @@
   },
   "scripts": {
     "clean": "concurrently \"rimraf node_modules\" \"cd client && rimraf node_modules build\" \"cd server && rimraf node_modules build\"",
-    "build": "concurrently \"cd client && npm run build\" \"cd server && npm run build\"",
+    "build": "concurrently \"cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build\" \"cd server && npm install && npm install --only=dev --no-shrinkwrap && npm run build\"",
     "devstart": "concurrently \"cd client && npm start\" \"cd server && npm start\"",
     "heroku-postbuild": "npm run build",
     "start": "cd server && npm start"
