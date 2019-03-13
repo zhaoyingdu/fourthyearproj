@@ -1,28 +1,10 @@
 import Sequelize from 'sequelize'
 import moment from 'moment'
 
-const sequelize = new Sequelize(process.env.DATABASE_URL);
-/*const sequelize = new Sequelize(`${process.env.DB}`, `${process.env.DB_USER}`, `${process.env.DB_PASS}`, {
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  dialect: 'postgres',
-  operatorsAliases: false,
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
-});*/
-/*sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
-*/
+
+let DBUrl = process.env.DATABASE_URL || 'postgres://keagkkggmmoavr:f38e1827c7af3d957a09107c502f153fc1b05a1c2b114fda79dfde89df2eeca7@ec2-54-221-243-211.compute-1.amazonaws.com:5432/dcj4ab59j20pab'
+const sequelize = new Sequelize(DBUrl);
+
 const User = sequelize.import(__dirname + "/user.js")
 const Order = sequelize.import(__dirname + "/order.js")
 const Rfid = sequelize.import(__dirname + "/rfid.js")

@@ -11,30 +11,8 @@ var _sequelize = _interopRequireDefault(require("sequelize"));
 
 var _moment = _interopRequireDefault(require("moment"));
 
-require('dotenv').config();
-
-var sequelize = new _sequelize.default("".concat(process.env.DB), "".concat(process.env.DB_USER), "".concat(process.env.DB_PASS), {
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  dialect: 'postgres',
-  operatorsAliases: false,
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
-});
-/*sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
-*/
-
+var DBUrl = process.env.DATABASE_URL || 'postgres://keagkkggmmoavr:f38e1827c7af3d957a09107c502f153fc1b05a1c2b114fda79dfde89df2eeca7@ec2-54-221-243-211.compute-1.amazonaws.com:5432/dcj4ab59j20pab';
+var sequelize = new _sequelize.default(DBUrl);
 exports.sequelize = sequelize;
 var User = sequelize.import(__dirname + "/user.js");
 exports.User = User;
