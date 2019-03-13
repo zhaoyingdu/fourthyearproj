@@ -4,8 +4,6 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 
 var _index = require("./models/index");
 
-require("@babel/polyfill");
-
 var _app = _interopRequireDefault(require("./app"));
 
 var server = require('http').Server(_app.default);

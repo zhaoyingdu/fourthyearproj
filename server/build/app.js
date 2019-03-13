@@ -25,6 +25,9 @@ app.use('/api/user', _index.user);
 app.use('/api/order', _index.order);
 app.use('/api/station', _index.station);
 app.use('/api/rfid', _index.rfid);
+app.get('*', function (req, res) {
+  res.sendFile(_path.default.join(__dirname + '../client/build/index.html'));
+});
 app.use(function (err, req, res, next) {
   //console.error(err.stack)
   res.status(500).send('Something broke!' + err);

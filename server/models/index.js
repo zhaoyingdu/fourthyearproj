@@ -1,8 +1,8 @@
 import Sequelize from 'sequelize'
 import moment from 'moment'
-require('dotenv').config()
 
-const sequelize = new Sequelize(`${process.env.DB}`, `${process.env.DB_USER}`, `${process.env.DB_PASS}`, {
+const sequelize = new Sequelize(process.env.DATABASE_URL);
+/*const sequelize = new Sequelize(`${process.env.DB}`, `${process.env.DB_USER}`, `${process.env.DB_PASS}`, {
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   dialect: 'postgres',
@@ -13,7 +13,7 @@ const sequelize = new Sequelize(`${process.env.DB}`, `${process.env.DB_USER}`, `
     acquire: 30000,
     idle: 10000
   }
-});
+});*/
 /*sequelize
   .authenticate()
   .then(() => {
