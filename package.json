@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "10.15.1"
+    "node": "10.15.1",
+    "npm":"6.4.1"
   },
   "scripts": {
     "clean": "concurrently \"rimraf node_modules\" \"cd client && rimraf node_modules build\" \"cd server && rimraf node_modules build\"",
-    "build": "concurrently \"cd client && npm run build\" \"cd server &&npm run build\"",
+    "build": "concurrently \"cd client && npm run build\" \"cd server && npm run build\"",
     "devstart": "concurrently \"cd client && npm start\" \"cd server && npm start\"",
     "heroku-postbuild": "npm run build",
     "start": "cd server && npm start"

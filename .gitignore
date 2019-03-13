@@ -23,4 +23,4 @@ lib-cov
 # Dependency directories
 node_modules/
 jspm_packages/
-build/
+build/*
