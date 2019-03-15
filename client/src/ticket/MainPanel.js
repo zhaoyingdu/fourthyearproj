@@ -1,7 +1,7 @@
 import React,{Component, useState, useContext} from 'react'
 import {UserContext} from '../Context'
 import {buyTicket} from '../apiCalls'
-import {Button, Container, Card, CardTitle, CardText, Row, Col,CardBody, CardFooter, CardSubtitle, CardHeader } from 'reactstrap'
+import {Button, Container, Col} from 'reactstrap'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -53,11 +53,11 @@ let TicketForm = ()=>{
               disabledKeyboardNavigation={true}
             />
           <div className='d-flex justify-content-center'>
-            <Button outline onClick={handleSubmit} disabled={status==='fetching'}>submit order</Button>
+            <Button outline onClick={(e)=>handleSubmit(e)} disabled={status==='fetching'}>submit order</Button>
           </div>
       </Col>
       <Col xs='auto'>
-        {status!=='success'?
+        {status==='success'?
           <div style={{maxWidth:'80%'}}>
 
             <div className='p-2 text-secondary' >Thank you for your order, order summary:</div>
@@ -67,7 +67,7 @@ let TicketForm = ()=>{
               <br />
               please save this number, you will need this to enter the park!
             </div>
-            <div className='p-2'>date:<span className='border border-danger'>{date}</span></div>
+            <div className='p-2'>date:<span className='border border-danger'>{()=>moment(date).format('YYYY-MM-DD')}</span></div>
           </div>
         :null} 
       </Col>

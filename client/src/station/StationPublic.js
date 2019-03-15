@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import {getPublicSchedule, joinQueue,quitQueue, getPrivateSchedule} from '../apiCalls'
 import {usePrivateHook} from './PrivateScheduleHook'
+import {Row,Col, Container} from 'reactstrap'
 
 
 const stations = {
@@ -10,6 +11,7 @@ const stations = {
   university_center: 'University Center',
   minto:'Minto Case'
 }
+
 
 
 let StationPublic = ()=>{

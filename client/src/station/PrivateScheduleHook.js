@@ -11,7 +11,6 @@ export let usePrivateHook = ()=>{
     setStatus('fetching')
     return getPrivateSchedule(rfid)
       .then(res=>{
-        alert(JSON.stringify(res.data))
         setStatus('success')
         setSchedule(res.data)})
       .catch(error=>
@@ -33,3 +32,23 @@ export let usePrivateHook = ()=>{
   },[])
   return {privateStatus: status, privateSchedule: schedule, rfid}
 }
+
+/*
+let PrivateSchedule = ()=>{
+  
+    let [status, setStatus] = useState(null)
+    
+    let join = (station)=>{
+      if(status === 'fetching') return
+      setStatus('fetching')
+      joinQueue({rfid, stationname:station})
+        .
+    }
+
+    return (
+      key
+        ?<input type='image' src='minusSign.svg' onClick={(e)=>{e.preventDefault();join(key)}} />
+        :<input type='image' src='plusSign.svg' onClick={(e)=>{e.preventDefault();quit(key)}} />
+    )
+
+}*/

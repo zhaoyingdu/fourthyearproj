@@ -4,7 +4,8 @@ import path from 'path'
 require('dotenv').config({path:path.join(__dirname,'../.env')})
 
 
-const sequelize = new Sequelize(`${process.env.DATABASE_URL}`);
+let DBUrl = process.env.DATABASE_URL || process.env.DB_DEV_URL
+const sequelize = new Sequelize(`${DBUrl}`);
 
 const User = sequelize.import(__dirname + "/user.js")
 const Order = sequelize.import(__dirname + "/order.js")

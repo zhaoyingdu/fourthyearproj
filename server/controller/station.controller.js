@@ -48,7 +48,30 @@ export let exitQueue = (req,res,next) =>{
 
 
 
+export let getStaionUserTime = (req,res,next)=>{
+  Station.findOne({
+    where:{
+      name:stationname,
+      queue:{
+        [Op.contains]:[rfid]
+      }
+    }
+  }).then(station=>{
+    let {name} = station
+    if(!station) throw new Error(`station with ${name} not found, or user ${rfid} is not in queue`)
+    return res.json({[name]:calcUserRun(station)})
+  }).catch(e=>next(e))
+}
 
+let calcUserRun = ({schedule, capacity, queue, nextrun})=>{
+  return calcTime = schedule[nextrun+Math.floor(userPostion/capacity)]
+}
+
+let calcStationRun = ({schedule, nextrun})=>{
+  return schedule.length-1 === nextrun
+        ? -1
+        : schedule[nextrun]
+}
 
 export let getUserTime = (req,res,next)=>{
   let {rfid:userID} = req.body
@@ -56,10 +79,7 @@ export let getUserTime = (req,res,next)=>{
   return Station.findAll().then(stations=>{
     for(let station of stations){
       if(station.queue.includes(userID)){
-        let {schedule, capacity, queue, nextrun} = station
-        let userPostion = queue.findIndex(rfid=>rfid===userID)+1
-        let calcTime = schedule[nextrun+Math.floor(userPostion/capacity)]
-        report = {...report,[station.name]: calcTime} //todo: convert to expected waitng time for this specific guy
+        report = {...report,[station.name]: calcUserRun(station)} //todo: convert to expected waitng time for this specific guy
       }
     }
     return res.json(report)
@@ -104,12 +124,8 @@ export let getPublicSchedule = (req,res,next)=>{
   Station.findAll().then(stations=>{
     let scheduleList = {}  
     for(let station of stations){
-      let {name, capacity, queue, schedule, nextrun} = station
-      let expectedWait = schedule.length-1 === nextrun
-        ? -1
-        : schedule[nextrun]
-      console.log(JSON.stringify(scheduleList))   
-      scheduleList = {...scheduleList, [name]:expectedWait}
+      let {name} = station   
+      scheduleList = {...scheduleList, [name]:calcStationRun(station)}
     }
     if(Object.entries(scheduleList).length === 0) throw new Error('schedule empty')
     return res.json(scheduleList)
