@@ -4,7 +4,10 @@ import Navigation from './Navigation'
 import Ticket from './ticket/MainPanel'
 import Station from './station/Station'
 import Map from './map/Map'
+import Dashboard from './dashBoard/DashBoard'
 import {ContextProvider} from './Context'
+import './App.css'
+
 
 let App = ()=>{
   return( 
@@ -14,7 +17,8 @@ let App = ()=>{
       <Route path='/ticket' component={Ticket}/>
       <Route path='/station' component={Station} />
       <Route path='/map' component={Map} /> 
-  </ContextProvider>
+      <Route path='/dashboard' render = {Dashboard}/>
+    </ContextProvider>
   </BrowserRouter>
 )
 }

@@ -9,6 +9,11 @@ station.route('/join')
 station.route('/quit')
   .post(exitQueue)
 station.route('/private')
-  .get(getUserTime)
+  .post(getUserTime)
+
+
+
+
+
 
 export {station}

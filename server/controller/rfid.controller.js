@@ -31,10 +31,11 @@ export let redeemRfid = (req,res,next)=>{
 }
 
 export let getRfid = (req,res,next)=>{
-  let {email} = req.params
+  let {email} = req.body
   return Rfid.findOne({email})
     .then(rfid=>{
       if(!rfid) return res.status(400).send('email doesn\'t have rfid associated')
-      return res.json({rfid: rfid.rfid})
+      res.data = {...res.data,rfid: rfid.rfid} //todo: should be res.data?
+      next()
     }).catch(err=>next(err))
 }

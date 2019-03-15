@@ -6,7 +6,7 @@ import { Col, Button,ButtonGroup, Form, FormGroup, Label, Input,
        DropdownMenu,
        DropdownItem } from 'reactstrap';
 import {UserContext} from '../Context'
-import {login, register} from './apiCalls'
+import {login, register} from '../apiCalls'
 
 import {
   Route,
@@ -59,7 +59,6 @@ let Register = (props)=> {
       setPassword(passwordInput)
       setStatus('success')
     }).catch((err)=>{
-      alert(err)
       setStatus('failed')
     })
   }
@@ -122,7 +121,7 @@ let Register = (props)=> {
 
 
 let Login = (props)=> {
-  let {setEmail, setPassword} = useContext(UserContext)
+  let {setEmail, setPassword, setRfid} = useContext(UserContext)
   //if(email!==null && password !== null) return null //render null
   let [status, setStatus] = useState(null)
   let [emailInput,setEmailInput] = useState('')
@@ -144,12 +143,16 @@ let Login = (props)=> {
       return
     }
     setStatus('fetching')
-    login({email:emailInput,password:passwordInput}).then(()=>{
+    login({email:emailInput,password:passwordInput}).then(({data})=>{
+      let {email, rfid} = data
+      Object.keys(data).forEach(key=>{
+        localStorage.setItem(key, data[key])
+      })
       setEmail(emailInput)
       setPassword(passwordInput)
+      setRfid(rfid||null)
       setStatus('success')
     }).catch((err)=>{
-      alert(err)
       setStatus('failed')
     })
   }
@@ -200,8 +203,8 @@ let Login = (props)=> {
 }
 
 
-function Auth(props) {
-  let {email, password, setEmail, setPassword} = useContext(UserContext)
+let Auth = (props) => {
+  let {email, password, setEmail, setPassword, setRfid} = useContext(UserContext)
   let loggedIn = email !== null && password !== null
   let logout = ()=>{
     setEmail(null)
@@ -209,17 +212,23 @@ function Auth(props) {
   }
   return (
       <div>
-        <UncontrolledDropdown nav inNavbar>
+        <UncontrolledDropdown inNavbar>
         <DropdownToggle nav caret>
-          DashBoard
+          {!email? 'users': email.split('@')[0]}
           </DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem>
+          <DropdownMenu right>
               {!loggedIn
-                ?<><Link to="/login">login</Link><br /><Link to="/register">register</Link></>
-                :<Button color='link' value = 'logout' onClick={logout}>logout</Button>
+                ?<>
+                  <DropdownItem><Link to="/login" className='text-secondary'>login</Link></DropdownItem>
+                  <DropdownItem><Link to="/register" className='text-secondary'>register</Link></DropdownItem>
+                </>
+                :<>
+                  <DropdownItem><Link to='/dashboard/orders'  className='text-secondary'>my order</Link></DropdownItem>
+                  <DropdownItem><Link to='/dashboard/parking'  className='text-secondary'>my parking</Link></DropdownItem>
+                  <DropdownItem><Link to='/dashboard/activities'  className='text-secondary'>my activities</Link></DropdownItem>
+                  <DropdownItem onClick={logout} className='text-secondary'>logout</DropdownItem>
+                </>
               }
-            </DropdownItem>
           </DropdownMenu>
         </UncontrolledDropdown>
         <Route path="/login" component={Login} />

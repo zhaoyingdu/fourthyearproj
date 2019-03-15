@@ -25,7 +25,7 @@ export let joinQueue = (req,res,next)=>{
   }).then(station=>{
     if(!station) throw new Error(`station with ${stationname} not found, or user ${rfid} is already in queue`)
     station.queue.push(rfid)
-    return station.save().then(()=>res.status(200).send())
+    return station.update({queue:station.queue}).then(()=>res.status(200).send())
   }).catch(e=>next(e))
 }
 
@@ -41,8 +41,8 @@ export let exitQueue = (req,res,next) =>{
     }
   }).then(station=>{
     if(!station) throw new Error(`station with ${stationname} not found, or user ${rfid} is not in queue`)
-    station.queue = station.queue.filter(elem=>elem!==rfid)
-    return station.save().then(()=>res.status(200).send())
+    //station.queue = station.queue.filter(elem=>elem!==rfid)
+    return station.update({queue: station.queue.filter(elem=>elem!==rfid)}).then(()=>res.status(200).send())
   }).catch(e=>next(e))
 }
 
@@ -55,10 +55,10 @@ export let getUserTime = (req,res,next)=>{
   let report = {}
   return Station.findAll().then(stations=>{
     for(let station of stations){
-      if(station.queue.includes(userRfid)){
-        let {schedule, capacity, queue} = station
+      if(station.queue.includes(userID)){
+        let {schedule, capacity, queue, nextrun} = station
         let userPostion = queue.findIndex(rfid=>rfid===userID)+1
-        let calTime = schedule[nextrun+Math.floor(userPostion/capacity)]
+        let calcTime = schedule[nextrun+Math.floor(userPostion/capacity)]
         report = {...report,[station.name]: calcTime} //todo: convert to expected waitng time for this specific guy
       }
     }
@@ -112,7 +112,7 @@ export let getPublicSchedule = (req,res,next)=>{
       scheduleList = {...scheduleList, [name]:expectedWait}
     }
     if(Object.entries(scheduleList).length === 0) throw new Error('schedule empty')
-    return res.status(200).send(JSON.stringify(scheduleList))
+    return res.json(scheduleList)
   }).catch(e=>next(e))
 } 
 

@@ -1,5 +1,5 @@
 import {User} from '../models/index'
-import { runInNewContext } from 'vm';
+
 
 let register = async (req,res,next)=>{
   let {email,password} = req.body
@@ -17,10 +17,13 @@ let login = (req, res,next)=>{
     password:req.body.password}
   }).then(user=>{
     user
-      ? res.status(200).send()
+      ? res.data={email:user.email, password:user.password}
       : res.status(401).send()
+      
+    next()
   }).catch(err=>next(err))
 }
+
 
 
 export {register, login}

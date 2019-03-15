@@ -1,8 +1,10 @@
 
 import express from 'express'
+import proxy from 'express-http-proxy'
 import path from 'path'
 import bodyParser from 'body-parser'
 import {user, order, station, rfid} from './routes/index'
+
 
 
 
@@ -15,6 +17,9 @@ app.use('/api/user', user)
 app.use('/api/order', order)
 app.use('/api/station', station)
 app.use('/api/rfid', rfid)
+
+
+
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'../client/build/index.html'));

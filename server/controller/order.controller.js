@@ -11,4 +11,20 @@ let makeOrder = (req,res,next)=>{
   .catch(err=>next(err))
 }
 
+
+export let getOrder = (req,res,next)=>{
+  let {email} = req.params
+  Order.findAll({where: {email}})
+    .then(orders=>{
+      if(orders.length === 0) next()
+      let data = []
+      for(let order of orders){
+        let {issuedate, expiredate, confirmationnumber} = order
+        data.push({issuedate, expiredate, confirmationnumber})
+      }
+      res.json(data)
+    })
+    .catch(e=>next(e))
+}
+
 export {makeOrder}

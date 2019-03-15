@@ -1,10 +1,10 @@
 import express from 'express'
-import {auth, makeOrder} from '../controller/index'
+import {auth, makeOrder,getOrder} from '../controller/index'
 
 let orderRoutes = express.Router()
 orderRoutes.route('/')
-  .all(auth)
-  .post(makeOrder)
-  .get()
+  .post(auth, makeOrder)
+orderRoutes.route('/:email')
+  .get(getOrder)
 
 export {orderRoutes as order}

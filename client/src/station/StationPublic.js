@@ -1,7 +1,15 @@
 import React,{useEffect,useState} from 'react'
-import {getPublicSchedule} from './apiCalls'
+import {getPublicSchedule, joinQueue,quitQueue, getPrivateSchedule} from '../apiCalls'
 import {usePrivateHook} from './PrivateScheduleHook'
-import {Spinner, ListGroup, ListGroupItem} from 'reactstrap'
+
+
+const stations = {
+  tory:'Tory Building',
+  mechanzie: 'Mechanzie Building',
+  library: 'McO\'drum Library',
+  university_center: 'University Center',
+  minto:'Minto Case'
+}
 
 
 let StationPublic = ()=>{
@@ -13,55 +21,55 @@ let StationPublic = ()=>{
     getPublicSchedule().then(res=>{
       setStatus('success')
       setSchedule(res.data)
-      console.log(schedule)
     }).catch((err)=>{
       setStatus('failed')
       setSchedule(null)
     })}
   useEffect(()=>{ 
-    setImmediate(processFetch())
+    let imm = setImmediate(()=>processFetch())
     let timer = setInterval(()=>processFetch(),10000)
-    return ()=>{clearInterval(timer)}
+    return ()=>{
+      clearImmediate(imm)
+      clearInterval(timer)}
   }, [])
 
-  let joinQueue = ()=>{
-    alert('you wish to join, huh')
+  let handleJoin = (station)=>{
+    joinQueue({rfid, stationname:station})
   }
-  let quitQueue =() =>{
-    alert('you wish to quit?')
+  let handleQuit =(station) =>{
+    quitQueue({rfid,stationname:station})
   }
 
-  if(status !=='success') return <p>fetch failure</p>
-  if(rfid){
-    let privateKeys = Object.keys(privateSchedule||{})
-    return(
+  if(status !=='success') return null
+  return (
     <>
-      <ListGroup>
-        {Object.keys(schedule).map((key)=>{
-          let hasUser = privateKeys.includes(key)
-            return(
-              <ListGroupItem color={hasUser?'danger':'warning'} key={key} onClick={hasUser?()=>quitQueue(rfid):()=>joinQueue(rfid)}>
-                {key} next run at: {schedule[key]}
-                {hasUser? `your run starts at: ${privateSchedule[key]}`:null}
-              </ListGroupItem>
-            )
-          })
-        }
-      </ListGroup>
-    </>
-  )}
-
-  return(
-    <>
-    <ListGroup>
-      {Object.keys(schedule).map((key)=>{
-          return(<ListGroupItem color={'warning'} key={key}>
-            {key} next run at: {schedule[key]}
-          </ListGroupItem>)
-        })
-      }
-    </ListGroup>
-    </>
+    <div className='d-flex flex-column align-items-center'>
+      <div className='p-2 d-flex text-secondary'>
+          <div style={{width:'10rem'}}>Stations</div>
+          <div style={{width:'10rem'}}>next run</div>
+          {privateStatus==='success'? <div style={{width:'10rem'}}>your run</div>: null}
+      </div>
+      {Object.keys(stations).map(key=>{
+        return (
+          <div className='p-1.5 d-flex' key ={key}>
+            <div className = ''style={{width:'10rem'}}>{stations[key]}</div>
+            <div style={{width:'10rem'}}>{schedule[key]?schedule[key]:''}</div>
+            {privateStatus==='success'? 
+              <div style={{width:'10rem'}}>{
+                privateSchedule[key]
+                  ?<>
+                    {privateSchedule[key]}
+                    <input type='image' src='minusSign.svg' onClick={(e)=>{e.preventDefault();handleQuit(key)}} />
+                  </>
+                  :<input type='image' src='plusSign.svg' onClick={(e)=>{e.preventDefault();handleJoin(key)}} />}
+              </div> 
+              : ''
+            }
+         </div>
+        )
+      })}
+     </div>
+     </>
   )
 }
 export {StationPublic}

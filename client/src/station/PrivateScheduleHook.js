@@ -1,22 +1,29 @@
 import React,{useState, useEffect,useContext} from 'react'
 import {Spinner} from 'reactstrap'
 import {UserContext} from '../Context'
-import {getPrivateSchedule} from './apiCalls'
+import {getPrivateSchedule} from '../apiCalls'
 
 export let usePrivateHook = ()=>{
   let {rfid} = useContext(UserContext)
-  let [schedule, setSchedule] = useState(null)
-  let [status, setStatus] = useState(null)
+  let [schedule, setSchedule] = useState({})
+  let [status, setStatus] = useState()
   let processFetch = (rfid)=>{
     setStatus('fetching')
-    getPrivateSchedule(rfid)
-      .then(res=>{setStatus('fetching');setSchedule(res.data)})
-      .catch(error=>setStatus('failed'))
+    return getPrivateSchedule(rfid)
+      .then(res=>{
+        alert(JSON.stringify(res.data))
+        setStatus('success')
+        setSchedule(res.data)})
+      .catch(error=>
+        {
+        alert('error'+error)
+        setStatus('failed')
+        })
   }
   let imm, timer  
   useEffect(()=>{
     if(rfid){
-      imm =setImmediate(processFetch(rfid))
+      imm =setImmediate(()=>processFetch(rfid))
       timer = setInterval(()=>processFetch(rfid),10000)
     }
     return ()=>{
@@ -24,15 +31,5 @@ export let usePrivateHook = ()=>{
       if(timer)clearInterval(timer)
     }
   },[])
-  return {privateStatus: status, privateSchedue: schedule, rfid}
-}
-
-let StationPrivate = ()=>{
-  let {status,schedule} = usePrivateHook()
-  if(status === 'fetching') return <Spinner/>
-  if(status === 'failed') return <p>failed</p>
-  return Object.keys(schedule).map(
-    (key, index)=>{
-      return {[key]: `your run: ${schedule[key]}`}
-  })
+  return {privateStatus: status, privateSchedule: schedule, rfid}
 }

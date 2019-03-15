@@ -1,9 +1,14 @@
 import Sequelize from 'sequelize'
 import moment from 'moment'
+import path from 'path'
+require('dotenv').config({path:path.join(__dirname,'../.env')})
+console.log(path.join(__dirname,'../.env'))
+console.log(process.env.DB_DEV_URL)
 
+console.log(process.cwd())
 
-let DBUrl = process.env.DATABASE_URL || 'postgres://keagkkggmmoavr:f38e1827c7af3d957a09107c502f153fc1b05a1c2b114fda79dfde89df2eeca7@ec2-54-221-243-211.compute-1.amazonaws.com:5432/dcj4ab59j20pab'
-const sequelize = new Sequelize(DBUrl);
+let DBUrl = process.env.DATABASE_URL || process.env.DB_DEV_URL
+const sequelize = new Sequelize(`${DBUrl}`);
 
 const User = sequelize.import(__dirname + "/user.js")
 const Order = sequelize.import(__dirname + "/order.js")

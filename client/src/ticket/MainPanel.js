@@ -1,14 +1,14 @@
 import React,{Component, useState, useContext} from 'react'
 import {UserContext} from '../Context'
-import {buyTicket} from './apiCalls'
-import {Button,  Card, CardTitle, CardText, Row, Col,CardBody, CardFooter, CardSubtitle, CardHeader } from 'reactstrap'
+import {buyTicket} from '../apiCalls'
+import {Button, Container, Card, CardTitle, CardText, Row, Col,CardBody, CardFooter, CardSubtitle, CardHeader } from 'reactstrap'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css'
 
 
 let TicketForm = ()=>{
-  let {email, password, setConfirmationNumber} = useContext(UserContext)
+  let {email, password, confirmationNumber,setConfirmationNumber} = useContext(UserContext)
   if(password===null) return 'please login to makePurchase'
   let [date, setDate] = useState(null)
   let [error, setError] =useState(null)
@@ -27,12 +27,10 @@ let TicketForm = ()=>{
       setStatus('fetching')
       buyTicket({email, password, date:moment(date).format('YYYY-MM-DD')})
       .then(res=>{
-        alert(JSON.stringify(res))
         setStatus('success')
         setConfirmationNumber(res.data)
       })
       .catch(err=>{
-        alert(err)
         setError('order can not be processed')
         setStatus('failed')
       })
@@ -40,11 +38,10 @@ let TicketForm = ()=>{
   }
 
   return (
-    <Row>
-      <Col>
-        <Card>
-          <CardHeader>pick a date</CardHeader>
-          <Card body className="text-center">
+    <Container>
+    <div className='d-flex justify-content-center align-items-center'>
+      <Col xs='auto'>
+          <p className='mt-2 text-center text-secondary'>pick a date</p>
             <DatePicker
               inline
               selected={date}
@@ -55,21 +52,27 @@ let TicketForm = ()=>{
               maxDate = {moment('2019-12-31', 'YYYY-MM-DD').toDate()}
               disabledKeyboardNavigation={true}
             />
-            <Button onClick={handleSubmit} disabled={status==='fetching'}>submit order</Button>
-            <CardFooter color='mute'>{error}</CardFooter>
-          </Card>
-        </Card>
+          <div className='d-flex justify-content-center'>
+            <Button outline onClick={handleSubmit} disabled={status==='fetching'}>submit order</Button>
+          </div>
       </Col>
-      <Col>
-        <Card body className="text-center">
-          <CardTitle >Thank you for your order</CardTitle>
-          <CardSubtitle>confirmation Number:</CardSubtitle>
-          <CardText color='warning'>000000,please save this number</CardText>
-          <CardSubtitle>date:</CardSubtitle>
-          <CardText>date</CardText>
-        </Card>  
+      <Col xs='auto'>
+        {status!=='success'?
+          <div style={{maxWidth:'80%'}}>
+
+            <div className='p-2 text-secondary' >Thank you for your order, order summary:</div>
+
+            <div className='p-2'>confirmation Number:
+              <span className='border border-danger'>{confirmationNumber}</span>
+              <br />
+              please save this number, you will need this to enter the park!
+            </div>
+            <div className='p-2'>date:<span className='border border-danger'>{date}</span></div>
+          </div>
+        :null} 
       </Col>
-    </Row>
+    </div>
+    </Container>
   )
 }
 
