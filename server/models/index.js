@@ -2,13 +2,9 @@ import Sequelize from 'sequelize'
 import moment from 'moment'
 import path from 'path'
 require('dotenv').config({path:path.join(__dirname,'../.env')})
-console.log(path.join(__dirname,'../.env'))
-console.log(process.env.DB_DEV_URL)
 
-console.log(process.cwd())
 
-let DBUrl = process.env.DATABASE_URL || process.env.DB_DEV_URL
-const sequelize = new Sequelize(`${DBUrl}`);
+const sequelize = new Sequelize(process.env.DATABASE_URL);
 
 const User = sequelize.import(__dirname + "/user.js")
 const Order = sequelize.import(__dirname + "/order.js")
