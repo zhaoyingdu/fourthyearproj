@@ -15,7 +15,6 @@ export let usePrivateHook = ()=>{
         setSchedule(res.data)})
       .catch(error=>
         {
-        alert('error'+error)
         setStatus('failed')
         })
   }

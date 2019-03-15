@@ -20,7 +20,10 @@
     "moment": "^2.24.0",
     "pg": "^7.8.2",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.43.0"
+    "react-dom": "^16.8.4",
+    "sequelize": "^4.43.0",
+    "socket.io": "^2.2.0",
+    "twitter": "^1.7.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

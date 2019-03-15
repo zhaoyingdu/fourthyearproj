@@ -1,0 +1,227 @@
+{
+  "created_at": "Fri Mar 15 12:32:13 +0000 2019",
+  "id": 1106533558682701800,
+  "id_str": "1106533558682701824",
+  "text": "#ottawa #enlightenment #equation #intent #alignment #energy #action #karma #outcome #vibration https://t.co/DyuCRTPojs",
+  "display_text_range": [
+    0,
+    94
+  ],
+  "source": "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+  "truncated": false,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+    "id": 937436858044235800,
+    "id_str": "937436858044235777",
+    "name": "TheEnergyInstitute",
+    "screen_name": "TheEnergyInst",
+    "location": null,
+    "url": "http://www.theenergyinstitute.ca",
+    "description": "We specialize in Feng Shui and Eastern Disciplines from our corporate headquarters in Ottawa, Canada.",
+    "translator_type": "none",
+    "protected": false,
+    "verified": false,
+    "followers_count": 399,
+    "friends_count": 778,
+    "listed_count": 6,
+    "favourites_count": 8,
+    "statuses_count": 1075,
+    "created_at": "Sun Dec 03 21:42:18 +0000 2017",
+    "utc_offset": null,
+    "time_zone": null,
+    "geo_enabled": false,
+    "lang": "en",
+    "contributors_enabled": false,
+    "is_translator": false,
+    "profile_background_color": "F5F8FA",
+    "profile_background_image_url": "",
+    "profile_background_image_url_https": "",
+    "profile_background_tile": false,
+    "profile_link_color": "1DA1F2",
+    "profile_sidebar_border_color": "C0DEED",
+    "profile_sidebar_fill_color": "DDEEF6",
+    "profile_text_color": "333333",
+    "profile_use_background_image": true,
+    "profile_image_url": "http://pbs.twimg.com/profile_images/937451670593732608/5MEB7sTX_normal.jpg",
+    "profile_image_url_https": "https://pbs.twimg.com/profile_images/937451670593732608/5MEB7sTX_normal.jpg",
+    "default_profile": true,
+    "default_profile_image": false,
+    "following": null,
+    "follow_request_sent": null,
+    "notifications": null
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "is_quote_status": false,
+  "quote_count": 0,
+  "reply_count": 0,
+  "retweet_count": 0,
+  "favorite_count": 0,
+  "entities": {
+    "hashtags": [
+      {
+        "text": "ottawa",
+        "indices": [
+          0,
+          7
+        ]
+      },
+      {
+        "text": "enlightenment",
+        "indices": [
+          8,
+          22
+        ]
+      },
+      {
+        "text": "equation",
+        "indices": [
+          23,
+          32
+        ]
+      },
+      {
+        "text": "intent",
+        "indices": [
+          33,
+          40
+        ]
+      },
+      {
+        "text": "alignment",
+        "indices": [
+          41,
+          51
+        ]
+      },
+      {
+        "text": "energy",
+        "indices": [
+          52,
+          59
+        ]
+      },
+      {
+        "text": "action",
+        "indices": [
+          60,
+          67
+        ]
+      },
+      {
+        "text": "karma",
+        "indices": [
+          68,
+          74
+        ]
+      },
+      {
+        "text": "outcome",
+        "indices": [
+          75,
+          83
+        ]
+      },
+      {
+        "text": "vibration",
+        "indices": [
+          84,
+          94
+        ]
+      }
+    ],
+    "urls": [],
+    "user_mentions": [],
+    "symbols": [],
+    "media": [
+      {
+        "id": 1106533162128044000,
+        "id_str": "1106533162128044033",
+        "indices": [
+          95,
+          118
+        ],
+        "media_url": "http://pbs.twimg.com/media/D1syDFzU8AEfrW9.jpg",
+        "media_url_https": "https://pbs.twimg.com/media/D1syDFzU8AEfrW9.jpg",
+        "url": "https://t.co/DyuCRTPojs",
+        "display_url": "pic.twitter.com/DyuCRTPojs",
+        "expanded_url": "https://twitter.com/TheEnergyInst/status/1106533558682701824/photo/1",
+        "type": "photo",
+        "sizes": {
+          "thumb": {
+            "w": 150,
+            "h": 150,
+            "resize": "crop"
+          },
+          "large": {
+            "w": 799,
+            "h": 515,
+            "resize": "fit"
+          },
+          "medium": {
+            "w": 799,
+            "h": 515,
+            "resize": "fit"
+          },
+          "small": {
+            "w": 680,
+            "h": 438,
+            "resize": "fit"
+          }
+        }
+      }
+    ]
+  },
+  "extended_entities": {
+    "media": [
+      {
+        "id": 1106533162128044000,
+        "id_str": "1106533162128044033",
+        "indices": [
+          95,
+          118
+        ],
+        "media_url": "http://pbs.twimg.com/media/D1syDFzU8AEfrW9.jpg",
+        "media_url_https": "https://pbs.twimg.com/media/D1syDFzU8AEfrW9.jpg",
+        "url": "https://t.co/DyuCRTPojs",
+        "display_url": "pic.twitter.com/DyuCRTPojs",
+        "expanded_url": "https://twitter.com/TheEnergyInst/status/1106533558682701824/photo/1",
+        "type": "photo",
+        "sizes": {
+          "thumb": {
+            "w": 150,
+            "h": 150,
+            "resize": "crop"
+          },
+          "large": {
+            "w": 799,
+            "h": 515,
+            "resize": "fit"
+          },
+          "medium": {
+            "w": 799,
+            "h": 515,
+            "resize": "fit"
+          },
+          "small": {
+            "w": 680,
+            "h": 438,
+            "resize": "fit"
+          }
+        }
+      }
+    ]
+  },
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false,
+  "filter_level": "low",
+  "lang": "und",
+  "timestamp_ms": "1552653133446"
+}

@@ -58,14 +58,11 @@ export let getStaionUserTime = (req,res,next)=>{
     }
   }).then(station=>{
     let {name} = station
-    if(!station) throw new Error(`station with ${name} not found, or user ${rfid} is not in queue`)
+    if(!station) throw new Error(`station with ${stationname} not found, or user ${rfid} is not in queue`)
     return res.json({[name]:calcUserRun(station)})
   }).catch(e=>next(e))
 }
 
-let calcUserRun = ({schedule, capacity, queue, nextrun})=>{
-  return calcTime = schedule[nextrun+Math.floor(userPostion/capacity)]
-}
 
 let calcStationRun = ({schedule, nextrun})=>{
   return schedule.length-1 === nextrun
@@ -79,7 +76,9 @@ export let getUserTime = (req,res,next)=>{
   return Station.findAll().then(stations=>{
     for(let station of stations){
       if(station.queue.includes(userID)){
-        report = {...report,[station.name]: calcUserRun(station)} //todo: convert to expected waitng time for this specific guy
+        let userPostion = queue.findIndex(rfid=>rfid===userID)+1
+        let calcTime = schedule[nextrun+Math.floor(userPostion/capacity)]
+        report = {...report,[station.name]: calcTime} //todo: convert to expected waitng time for this specific guy
       }
     }
     return res.json(report)

@@ -5,6 +5,7 @@ import Ticket from './ticket/MainPanel'
 import Station from './station/Station'
 import Map from './map/Map'
 import Dashboard from './dashBoard/DashBoard'
+import TweetPanel from './Tweet'
 import {ContextProvider} from './Context'
 import './App.css'
 
@@ -18,6 +19,7 @@ let App = ()=>{
       <Route path='/station' component={Station} />
       <Route path='/map' component={Map} /> 
       <Route path='/dashboard' render = {Dashboard}/>
+      <Route exact path='/' component={TweetPanel} />
     </ContextProvider>
   </BrowserRouter>
 )
