@@ -7,6 +7,17 @@ require('dotenv').config({debug:process.env.DEBUG, path:'../.env'})
 const server = require('http').Server(app)
 const port = process.env.PORT ||5000;
 let serveTweet = new IO()
+serveTweet.on('connection', socket=>{
+  socket.on('disconnection', reason=>{
+    socket.disconnect(true)
+  })
+  socket.on('error', error=>{
+    
+  })
+})
+
+
+
 let updater
 sequelize.sync({force:false}).then(function() {
 

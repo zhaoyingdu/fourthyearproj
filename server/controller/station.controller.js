@@ -76,6 +76,7 @@ export let getUserTime = (req,res,next)=>{
   return Station.findAll().then(stations=>{
     for(let station of stations){
       if(station.queue.includes(userID)){
+        let {queue, schedule, capacity, nextrun} = station
         let userPostion = queue.findIndex(rfid=>rfid===userID)+1
         let calcTime = schedule[nextrun+Math.floor(userPostion/capacity)]
         report = {...report,[station.name]: calcTime} //todo: convert to expected waitng time for this specific guy

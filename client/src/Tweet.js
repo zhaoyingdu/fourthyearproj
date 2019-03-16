@@ -30,7 +30,7 @@ let Tweet = ({name, text})=>{
 
 let TweetList = ({list})=>{
   return(
-    <div className='d-flex flex-column'>
+    <div className='d-flex flex-column justify-content-center'>
      {list.slice(-10).map(li=>{
       return <Tweet key={li[0]} name={li[1]} text={li[2]} />
      })}
@@ -42,14 +42,15 @@ let TweetPanel = ()=>{
   let [tweetlist, setTweetList] = useState([])
 
   useEffect(()=>{
-    const client = IO()
+    const client = IO({
+      reconnectionAttempts:40
+    })
     client.on('tweet', (name, id, text)=>{
       setTweetList((prev)=>[...prev, [id,name,text]])
     })
-    client.on('error', ()=>{
-
-    })
-
+    client.on('error', ()=>{    })
+    client.on('connection error', ()=>{    })
+    client.on('reconnection error', ()=>{    })
     return ()=>client.close()
   },[])
   
