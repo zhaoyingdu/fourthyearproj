@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.makeOrder = void 0;
+exports.makeOrder = exports.getOrder = void 0;
 
 var _index = require("../models/index");
 
@@ -32,3 +32,52 @@ var makeOrder = function makeOrder(req, res, next) {
 };
 
 exports.makeOrder = makeOrder;
+
+var getOrder = function getOrder(req, res, next) {
+  var email = req.params.email;
+
+  _index.Order.findAll({
+    where: {
+      email: email
+    }
+  }).then(function (orders) {
+    if (orders.length === 0) next();
+    var data = [];
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = orders[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var order = _step.value;
+        var issuedate = order.issuedate,
+            expiredate = order.expiredate,
+            confirmationnumber = order.confirmationnumber;
+        data.push({
+          issuedate: issuedate,
+          expiredate: expiredate,
+          confirmationnumber: confirmationnumber
+        });
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return != null) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+
+    res.json(data);
+  }).catch(function (e) {
+    return next(e);
+  });
+};
+
+exports.getOrder = getOrder;

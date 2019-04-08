@@ -9,6 +9,8 @@ exports.default = void 0;
 
 var _express = _interopRequireDefault(require("express"));
 
+var _expressHttpProxy = _interopRequireDefault(require("express-http-proxy"));
+
 var _path = _interopRequireDefault(require("path"));
 
 var _bodyParser = _interopRequireDefault(require("body-parser"));
@@ -16,7 +18,7 @@ var _bodyParser = _interopRequireDefault(require("body-parser"));
 var _index = require("./routes/index");
 
 var app = (0, _express.default)();
-app.use(_express.default.static(_path.default.join(__dirname, '../client/build')));
+app.use(_express.default.static(_path.default.join(__dirname, '../../client/build')));
 app.use(_bodyParser.default.json());
 app.use(_bodyParser.default.urlencoded({
   extended: false

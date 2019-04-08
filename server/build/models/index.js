@@ -11,8 +11,14 @@ var _sequelize = _interopRequireDefault(require("sequelize"));
 
 var _moment = _interopRequireDefault(require("moment"));
 
-var DBUrl = process.env.DATABASE_URL || 'postgres://keagkkggmmoavr:f38e1827c7af3d957a09107c502f153fc1b05a1c2b114fda79dfde89df2eeca7@ec2-54-221-243-211.compute-1.amazonaws.com:5432/dcj4ab59j20pab';
-var sequelize = new _sequelize.default(DBUrl);
+var _path = _interopRequireDefault(require("path"));
+
+require('dotenv').config({
+  path: _path.default.join(__dirname, '../.env')
+});
+
+var DBUrl = process.env.DATABASE_URL || process.env.DB_DEV_URL;
+var sequelize = new _sequelize.default("".concat(DBUrl));
 exports.sequelize = sequelize;
 var User = sequelize.import(__dirname + "/user.js");
 exports.User = User;

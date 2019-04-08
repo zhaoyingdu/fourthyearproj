@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getRfid = exports.redeemRfid = void 0;
 
+var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
+
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
@@ -89,14 +91,16 @@ var redeemRfid = function redeemRfid(req, res, next) {
 exports.redeemRfid = redeemRfid;
 
 var getRfid = function getRfid(req, res, next) {
-  var email = req.params.email;
+  var email = req.body.email;
   return _index.Rfid.findOne({
     email: email
   }).then(function (rfid) {
     if (!rfid) return res.status(400).send('email doesn\'t have rfid associated');
-    return res.json({
-      rfid: rfid.rfid
+    res.data = (0, _objectSpread2.default)({}, res.data, {
+      rfid: rfid.rfid //todo: should be res.data?
+
     });
+    next();
   }).catch(function (err) {
     return next(err);
   });

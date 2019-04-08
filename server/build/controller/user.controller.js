@@ -13,8 +13,6 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _index = require("../models/index");
 
-var _vm = require("vm");
-
 var register =
 /*#__PURE__*/
 function () {
@@ -68,7 +66,11 @@ var login = function login(req, res, next) {
       password: req.body.password
     }
   }).then(function (user) {
-    user ? res.status(200).send() : res.status(401).send();
+    user ? res.data = {
+      email: user.email,
+      password: user.password
+    } : res.status(401).send();
+    next();
   }).catch(function (err) {
     return next(err);
   });

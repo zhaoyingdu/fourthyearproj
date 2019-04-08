@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getPublicSchedule = exports.refreshTime = exports.refreshQueue = exports.getUserTime = exports.exitQueue = exports.joinQueue = exports.valJoin = void 0;
+exports.getPublicSchedule = exports.refreshTime = exports.refreshQueue = exports.getUserTime = exports.getStaionUserTime = exports.exitQueue = exports.joinQueue = exports.valJoin = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -49,7 +49,9 @@ var joinQueue = function joinQueue(req, res, next) {
   }).then(function (station) {
     if (!station) throw new Error("station with ".concat(stationname, " not found, or user ").concat(rfid, " is already in queue"));
     station.queue.push(rfid);
-    return station.save().then(function () {
+    return station.update({
+      queue: station.queue
+    }).then(function () {
       return res.status(200).send();
     });
   }).catch(function (e) {
@@ -69,11 +71,13 @@ var exitQueue = function exitQueue(req, res, next) {
       queue: (0, _defineProperty2.default)({}, _sequelize.Op.contains, [rfid])
     }
   }).then(function (station) {
-    if (!station) throw new Error("station with ".concat(stationname, " not found, or user ").concat(rfid, " is not in queue"));
-    station.queue = station.queue.filter(function (elem) {
-      return elem !== rfid;
-    });
-    return station.save().then(function () {
+    if (!station) throw new Error("station with ".concat(stationname, " not found, or user ").concat(rfid, " is not in queue")); //station.queue = station.queue.filter(elem=>elem!==rfid)
+
+    return station.update({
+      queue: station.queue.filter(function (elem) {
+        return elem !== rfid;
+      })
+    }).then(function () {
       return res.status(200).send();
     });
   }).catch(function (e) {
@@ -82,6 +86,29 @@ var exitQueue = function exitQueue(req, res, next) {
 };
 
 exports.exitQueue = exitQueue;
+
+var getStaionUserTime = function getStaionUserTime(req, res, next) {
+  _index.Station.findOne({
+    where: {
+      name: stationname,
+      queue: (0, _defineProperty2.default)({}, _sequelize.Op.contains, [rfid])
+    }
+  }).then(function (station) {
+    var name = station.name;
+    if (!station) throw new Error("station with ".concat(stationname, " not found, or user ").concat(rfid, " is not in queue"));
+    return res.json((0, _defineProperty2.default)({}, name, calcUserRun(station)));
+  }).catch(function (e) {
+    return next(e);
+  });
+};
+
+exports.getStaionUserTime = getStaionUserTime;
+
+var calcStationRun = function calcStationRun(_ref2) {
+  var schedule = _ref2.schedule,
+      nextrun = _ref2.nextrun;
+  return schedule.length - 1 === nextrun ? -1 : schedule[nextrun];
+};
 
 var getUserTime = function getUserTime(req, res, next) {
   var userID = req.body.rfid;
@@ -95,14 +122,15 @@ var getUserTime = function getUserTime(req, res, next) {
       for (var _iterator = stations[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
         var station = _step.value;
 
-        if (station.queue.includes(userRfid)) {
-          var schedule = station.schedule,
+        if (station.queue.includes(userID)) {
+          var queue = station.queue,
+              schedule = station.schedule,
               capacity = station.capacity,
-              queue = station.queue;
+              nextrun = station.nextrun;
           var userPostion = queue.findIndex(function (rfid) {
             return rfid === userID;
           }) + 1;
-          var calTime = schedule[nextrun + Math.floor(userPostion / capacity)];
+          var calcTime = schedule[nextrun + Math.floor(userPostion / capacity)];
           report = (0, _objectSpread4.default)({}, report, (0, _defineProperty2.default)({}, station.name, calcTime)); //todo: convert to expected waitng time for this specific guy
         }
       }
@@ -132,10 +160,10 @@ exports.getUserTime = getUserTime;
 var refreshQueue =
 /*#__PURE__*/
 function () {
-  var _ref2 = (0, _asyncToGenerator2.default)(
+  var _ref3 = (0, _asyncToGenerator2.default)(
   /*#__PURE__*/
   _regenerator.default.mark(function _callee() {
-    var stations, parkOpen, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, station, _nextrun;
+    var stations, parkOpen, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, station, nextrun;
 
     return _regenerator.default.wrap(function _callee$(_context) {
       while (1) {
@@ -154,8 +182,8 @@ function () {
 
             for (_iterator2 = stations[Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
               station = _step2.value;
-              _nextrun = stations.nextrun;
-              if (_nextrun !== -1) parkOpen = true;
+              nextrun = stations.nextrun;
+              if (nextrun !== -1) parkOpen = true;
             }
 
             _context.next = 15;
@@ -210,7 +238,7 @@ function () {
   }));
 
   return function refreshQueue() {
-    return _ref2.apply(this, arguments);
+    return _ref3.apply(this, arguments);
   };
 }();
 
@@ -276,14 +304,8 @@ var getPublicSchedule = function getPublicSchedule(req, res, next) {
     try {
       for (var _iterator4 = stations[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
         var station = _step4.value;
-        var name = station.name,
-            capacity = station.capacity,
-            queue = station.queue,
-            schedule = station.schedule,
-            _nextrun2 = station.nextrun;
-        var expectedWait = schedule.length - 1 === _nextrun2 ? -1 : schedule[_nextrun2];
-        console.log(JSON.stringify(scheduleList));
-        scheduleList = (0, _objectSpread4.default)({}, scheduleList, (0, _defineProperty2.default)({}, name, expectedWait));
+        var name = station.name;
+        scheduleList = (0, _objectSpread4.default)({}, scheduleList, (0, _defineProperty2.default)({}, name, calcStationRun(station)));
       }
     } catch (err) {
       _didIteratorError4 = true;
@@ -301,7 +323,7 @@ var getPublicSchedule = function getPublicSchedule(req, res, next) {
     }
 
     if (Object.entries(scheduleList).length === 0) throw new Error('schedule empty');
-    return res.status(200).send(JSON.stringify(scheduleList));
+    return res.json(scheduleList);
   }).catch(function (e) {
     return next(e);
   });
