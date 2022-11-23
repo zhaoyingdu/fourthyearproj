@@ -22,7 +22,7 @@
     "pg-hstore": "^2.3.2",
     "react-dom": "^16.8.4",
     "sequelize": "^4.43.0",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.5.0",
     "twitter": "^1.7.1"
   },
   "devDependencies": {
